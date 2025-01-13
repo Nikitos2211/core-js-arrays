@@ -371,8 +371,13 @@ function calculateBalance(arr) {
  *    createChunks(['a', 'b', 'c', 'd', 'e'], 2) => [['a', 'b'], ['c', 'd'], ['e']]
  *    createChunks([10, 20, 30, 40, 50], 1) => [[10], [20], [30], [40], [50]]
  */
-function createChunks(/* arr, chunkSize */) {
-  throw new Error('Not implemented');
+function createChunks(arr, chunkSize) {
+  const arrCopy = [...arr];
+  const x = arr.reduce((acc) => {
+    acc.push(arrCopy.splice(0, chunkSize));
+    return acc;
+  }, []);
+  return x.filter((el) => el.length >= 1);
 }
 
 /**
@@ -567,8 +572,20 @@ function findCommonElements(arr1, arr2) {
  *    findLongestIncreasingSubsequence([3, 10, 2, 1, 20]) => 2
  *    findLongestIncreasingSubsequence([50, 3, 10, 7, 40, 80]) => 3
  */
-function findLongestIncreasingSubsequence(/* nums */) {
-  throw new Error('Not implemented');
+function findLongestIncreasingSubsequence(nums) {
+  const result = nums.reduce(
+    // [2,3,2,1]
+    (acc, _, index, array) => {
+      if (array[index] < array[index + 1]) {
+        acc[acc.length - 1] += 1;
+      } else {
+        acc.push(1);
+      }
+      return acc;
+    },
+    [1]
+  );
+  return Math.max(...result);
 }
 
 /**
@@ -664,22 +681,17 @@ function sortDigitNamesByNumericOrder(arr) {
  *
  */
 function swapHeadAndTail(arr) {
-  const { length } = arr; // Деструктуризация длины массива
+  const { length } = arr;
 
-  // Если массив пуст или содержит один элемент, возвращаем его
   if (length <= 1) return arr;
 
-  // Находим середину массива
   const middle = Math.floor(length / 2);
 
-  // Разделяем массив на голову, середину (если есть) и хвост
   const head = arr.slice(0, middle);
   const tail = arr.slice(-middle);
 
-  // Если длина массива нечетная, сохраняем средний элемент
   const midElement = length % 2 === 1 ? [arr[middle]] : [];
 
-  // Объединяем хвост, средний элемент (если есть) и голову
   return [...tail, ...midElement, ...head];
 }
 
